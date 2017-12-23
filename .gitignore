@@ -1,0 +1,10 @@
+Makefile
+
+# Haskell interface files
+*.hi
+
+# Haskell object files
+*.o
+
+# Problem input files
+*.in
