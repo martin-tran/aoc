@@ -1,4 +1,5 @@
-# AoC 2017
-Advent of Code 2017 solutions mainly done in Haskell.
+# Advent of Code
+- Problems from 2017 are mainly done in Haskell.
+- Problems from 2019 are mainly done in Go.
 
-Link to problems: [here](http://adventofcode.com/2017/)
+Link to problems: [here](http://adventofcode.com/)
