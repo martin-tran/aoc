@@ -66,7 +66,5 @@ func main() {
 		in2 <- mass2
 	}
 
-	ans1 := <-out1
-	ans2 := <-out2
-	fmt.Printf("Part 1: %v\nPart 2: %v\n", ans1, ans2)
+	fmt.Printf("Part 1: %v\nPart 2: %v\n", <-out1, <-out2)
 }
