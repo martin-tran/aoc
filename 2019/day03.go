@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 var (
@@ -104,7 +103,7 @@ func part2(in1, in2 []Instruction, out chan int) {
 			pos.X += move.X
 			pos.Y += move.Y
 			if elem, ok := grid[Pair{pos.X, pos.Y}]; ok {
-				hits = append(hits, steps + elem)
+				hits = append(hits, steps+elem)
 			}
 		}
 	}
@@ -114,25 +113,44 @@ func part2(in1, in2 []Instruction, out chan int) {
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-
+	lineIdx := 0
+	onComma := func(data []byte, atEOF bool) (advance int, token []byte, err error) {
+		for i := 0; i < len(data); i++ {
+			if data[i] == ',' {
+				return i + 1, data[:i], nil
+			}
+			if data[i] == '\n' {
+				lineIdx--
+				return i + 1, nil, nil
+			}
+		}
+		if !atEOF {
+			return 0, nil, nil
+		}
+		return 0, data, bufio.ErrFinalToken
+	}
+	scanner.Split(onComma)
+	
 	lines := make([][]Instruction, 2)
-	for i := 0; i < 2; i++ {
-		scanner.Scan()
+	for scanner.Scan() {
+		s := scanner.Text()
 		if err := scanner.Err(); err != nil {
 			fmt.Errorf("error reading input: %v\n", err)
 			return
 		}
-		raw_input := scanner.Text()
 
-		for _, op := range strings.Split(raw_input, ",") {
-			n, err := strconv.Atoi(op[1:])
-			if err != nil {
-				fmt.Errorf("error parsing input to int: %v\n", err)
-				return
-			}
-			p := Instruction{string(op[0]), n}
-			lines[i] = append(lines[i], p)
+		if lineIdx == -1 {
+			lineIdx = 1
+			continue
 		}
+
+		n, err := strconv.Atoi(s[1:])
+		if err != nil {
+			fmt.Errorf("error parsing input to int: %v\n", err)
+			return
+		}
+		p := Instruction{string(s[0]), n}
+		lines[lineIdx] = append(lines[lineIdx], p)
 	}
 
 	out1, out2 := make(chan int), make(chan int)
